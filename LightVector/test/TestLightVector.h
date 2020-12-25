@@ -13,11 +13,12 @@ public:
     void RunAllTests();
 
 private:
-    void TestReserve();
-    void TestSize();
-    void TestAt();
-    void TestPushBack();    
-    void TestPopBack();
+    void TestReserve_Test1();
+    void TestSize_Test1();
+    void TestAt_Test1();
+    void TestPushBack_Test1();
+    void TestPopBack_Test1();
+    void TestPopBackLowerLimit_Test2();
     void FillVectorWithData(LightVector<int>& vectorTest,
                             bool& testFailed);
     void RemoveNElementsFromVector(LightVector<int>& vectorTest,
