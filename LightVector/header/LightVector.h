@@ -20,7 +20,7 @@
 template<class T>
 class LightVector{
 public:
-    LightVector():vectorOfData_(nullptr), totalPositions_(0), currentPosition_(0){}
+    LightVector();
     ~LightVector();
     void reserve(uint32_t desiredSize);
     uint32_t size();
@@ -61,6 +61,15 @@ private:
 };
 
 template<class T>
+LightVector<T>::LightVector()
+    :vectorOfData_(nullptr),
+      totalPositions_(0),
+      currentPosition_(0)
+{
+
+}
+
+template<class T>
 LightVector<T>::~LightVector()
 {
     if(vectorOfData_!= nullptr){
@@ -94,7 +103,8 @@ void LightVector<T>::push_back(T element){
 template<class T>
 void LightVector<T>::pop_back(){
     DecreaseCurrentPosition();
-    CopyDataAndAllocateMemory(currentPosition_);
+    uint32_t desiredSize = currentPosition_;
+    CopyDataAndAllocateMemory(desiredSize);
 }
 
 template<class T>
