@@ -41,7 +41,13 @@ void TestLightVector::TestSize_Test1()
 {
     string str("Test Size test 1:");
     PrintTestHeader(str);
-    TestReserve_Test1();
+    LightVector<int> vectorTest;
+    uint32_t vectorSize = vectorTest.size();
+    uint32_t desiredSize = 4;
+    vectorTest.reserve(desiredSize);
+    vectorSize = vectorTest.size();
+    bool testFailed = vectorSize != desiredSize? true : false;
+    PrintTestResult(testFailed);
     PrintTwoNewLines();
 }
 

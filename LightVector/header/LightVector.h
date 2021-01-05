@@ -16,6 +16,7 @@
 #define LIGHTVECTOR_H
 
 #include "../../Common/header/DataTypes.h"
+#include "LightVectorDynamicMemoryManagement.h"
 
 template<class T>
 class LightVector{
@@ -43,21 +44,17 @@ private:
     bool IsVectorEmpty();
     bool IsIndexInsideVectorRange(const uint32_t& indexElement);
     void CopyDataAndAllocateMemory(const uint32_t& desiredSize);
-    void AllocateMemoryToVectorOfData(const uint32_t& desiredSize);
-    void AllocateMemoryTo(T **ptr, const uint32_t& desiredSize);
     void UpdateVectorSize(const uint32_t& desiredSize);
     bool IsItAnArray(const uint32_t& desiredSize);
     void CopyDataFromCurrentVectorIntoAuxiliaryVector(T * auxiliaryVector);
     void CopyDataFromAuxiliaryVectorIntoCurrentVector(T * auxiliaryVector);
     void CopyDataFromSourceIntoDestiny(T *vectorSource, T * vectorDestiny);
-	void DeleteVector(T ** vectorOfData);
-	void DeleteArrayOfElements(T ** vectorOfData);
-    void DeleteSingleElement(T ** singleElement);
 
 private:
     T * vectorOfData_;
     uint32_t totalPositions_;
     uint32_t currentPosition_;
+    LightVectorDynamicMemoryManagement<T> dynamicmemoryHandler_;
 };
 
 template<class T>
@@ -73,7 +70,7 @@ template<class T>
 LightVector<T>::~LightVector()
 {
     if(vectorOfData_!= nullptr){
-        DeleteVector(&vectorOfData_);
+        dynamicmemoryHandler_.DeleteVector(&vectorOfData_, totalPositions_);
     }
 }
 
@@ -144,13 +141,13 @@ T& LightVector<T>::GetElement(const uint32_t& indexElement){
 template<class T>
 T& LightVector<T>::GetDefaultElement(){
     uint32_t desiredSize = 1;
-    AllocateMemoryTo(&vectorOfData_, desiredSize);
+    dynamicmemoryHandler_.AllocateMemoryTo(&vectorOfData_, desiredSize);
     return *vectorOfData_;
 }
 
 template<class T>
 void LightVector<T>::DeleteArrayAndResetCurrentPositionAndVectorSize(){
-    DeleteVector(&vectorOfData_);
+    dynamicmemoryHandler_.DeleteVector(&vectorOfData_, totalPositions_);
     ResetCurrentPositon();
     ResetTotalVectorSize();
 }
@@ -197,41 +194,18 @@ template<class T>
 void LightVector<T>::CopyDataAndAllocateMemory(const uint32_t& desiredSize)
 {
     T * auxiliaryVector = nullptr;
-    AllocateMemoryTo(&auxiliaryVector, totalPositions_);
+    dynamicmemoryHandler_.AllocateMemoryTo(&auxiliaryVector, totalPositions_);
     CopyDataFromCurrentVectorIntoAuxiliaryVector(auxiliaryVector);
-    DeleteVector(&vectorOfData_);
-    AllocateMemoryToVectorOfData(desiredSize);
+    dynamicmemoryHandler_.DeleteVector(&vectorOfData_, totalPositions_);
+    dynamicmemoryHandler_.AllocateMemoryTo(&vectorOfData_, desiredSize);
     CopyDataFromAuxiliaryVectorIntoCurrentVector(auxiliaryVector);
     UpdateVectorSize(desiredSize);
-}
-
-template<class T>
-void LightVector<T>::AllocateMemoryToVectorOfData(const uint32_t& desiredSize)
-{
-    AllocateMemoryTo(&vectorOfData_, desiredSize);
-}
-
-template<class T>
-void LightVector<T>::AllocateMemoryTo(T **ptr, const uint32_t& desiredSize)
-{
-    if(IsItAnArray(desiredSize)){
-        *ptr = new T[desiredSize];
-    } else {
-        *ptr = new T;
-    }
 }
 
 template<class T>
 void LightVector<T>::UpdateVectorSize(const uint32_t& desiredSize)
 {
     totalPositions_ = desiredSize;
-}
-
-template<class T>
-bool LightVector<T>::IsItAnArray(const uint32_t& desiredSize)
-{
-    const uint32_t C_MINIMUM_ARRAY_SIZE = 2;
-    return desiredSize>=C_MINIMUM_ARRAY_SIZE;
 }
 
 template<class T>
@@ -252,31 +226,6 @@ void LightVector<T>::CopyDataFromSourceIntoDestiny(T *vectorSource, T * vectorDe
     for(uint32_t i=0; i<currentPosition_; i++){
         vectorDestiny[i] = vectorSource[i];
     }
-}
-
-template<class T>
-void LightVector<T>::DeleteVector(T ** vectorOfData)
-{
-    if(*vectorOfData != nullptr){
-        if(IsItAnArray(totalPositions_)){
-			DeleteArrayOfElements(vectorOfData);
-        } else {
-			DeleteSingleElement(vectorOfData);
-        }
-    }
-}
-
-template<class T>
-void LightVector<T>::DeleteArrayOfElements(T ** vectorOfData)
-{
-	delete [] *vectorOfData;
-	*vectorOfData = nullptr;
-}
-
-template<class T>
-void LightVector<T>::DeleteSingleElement(T ** singleElement){
-	delete *singleElement;
-	*singleElement = nullptr;
 }
 
 #endif // LIGHTVECTOR_H
