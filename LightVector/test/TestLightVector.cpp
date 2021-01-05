@@ -17,6 +17,7 @@ void TestLightVector::RunAllTests()
     TestPushBack_Test1();
     TestPopBack_Test1();
     TestPopBackLowerLimit_Test2();
+    TestClear_Test1();
 }
 
 void TestLightVector::TestReserve_Test1()
@@ -97,6 +98,21 @@ void TestLightVector::TestPopBackLowerLimit_Test2()
     uint32_t numberOfPositionsToRemove = 2;
     RemoveNElementsFromVector(vectorTest, numberOfPositionsToRemove);
     ReadElementsFromVectorAndCompareThem(vectorTest, testFailed);
+    PrintTestResult(testFailed);
+    PrintTwoNewLines();
+}
+
+void TestLightVector::TestClear_Test1()
+{
+    string str("Test Clear test 1:");
+    PrintTestHeader(str);
+    LightVector<int> vectorTest;
+    uint32_t desiredSize = 2;
+
+    vectorTest.reserve(desiredSize);
+    cout << "Size: " << vectorTest.size() << endl;
+    vectorTest.clear();
+    bool testFailed = vectorTest.size() == 0? false : true;
     PrintTestResult(testFailed);
     PrintTwoNewLines();
 }

@@ -19,6 +19,8 @@ private:
     void TestPushBack_Test1();
     void TestPopBack_Test1();
     void TestPopBackLowerLimit_Test2();
+    void TestClear_Test1();
+    void TestClear_Test2();
     void FillVectorWithData(LightVector<int>& vectorTest,
                             bool& testFailed);
     void RemoveNElementsFromVector(LightVector<int>& vectorTest,
