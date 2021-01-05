@@ -26,7 +26,6 @@ private:
     bool IsItAnArray(const uint32_t& desiredSize)const;
     void DeleteArrayOfElements(T ** vectorOfData)const;
     void DeleteSingleElement(T ** singleElement)const;
-
 };
 
 template<class T>

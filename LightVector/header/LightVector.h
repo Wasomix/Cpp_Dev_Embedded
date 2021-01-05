@@ -41,11 +41,9 @@ private:
     void ResetTotalVectorSize();
     void IncreaseCurrentPosition();
     void DecreaseCurrentPosition();
-    bool IsVectorEmpty();
     bool IsIndexInsideVectorRange(const uint32_t& indexElement);
     void CopyDataAndAllocateMemory(const uint32_t& desiredSize);
     void UpdateVectorSize(const uint32_t& desiredSize);
-    bool IsItAnArray(const uint32_t& desiredSize);
     void CopyDataFromCurrentVectorIntoAuxiliaryVector(T * auxiliaryVector);
     void CopyDataFromAuxiliaryVectorIntoCurrentVector(T * auxiliaryVector);
     void CopyDataFromSourceIntoDestiny(T *vectorSource, T * vectorDestiny);
@@ -176,12 +174,6 @@ void LightVector<T>::DecreaseCurrentPosition()
     if(currentPosition_>0){
         currentPosition_--;
     }
-}
-
-template<class T>
-bool LightVector<T>::IsVectorEmpty()
-{
-    return currentPosition_ == 0;
 }
 
 template<class T>
