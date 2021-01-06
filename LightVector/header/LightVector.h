@@ -24,12 +24,12 @@ public:
     LightVector();
     ~LightVector();
     void reserve(uint32_t desiredSize);
-    uint32_t size();
+    uint32_t size()const;
     void push_back(T element);
     void pop_back();
     T& at(const uint32_t& indexElement);
     void clear();
-    const uint32_t& GetNumberOfElements();
+    const uint32_t& GetNumberOfElements()const;
 
 private:
     bool IsDesiredSizeGreaterThanCurrentSize(const uint32_t& desiredSize) const;
@@ -41,7 +41,7 @@ private:
     void ResetTotalVectorSize();
     void IncreaseCurrentPosition();
     void DecreaseCurrentPosition();
-    bool IsIndexInsideVectorRange(const uint32_t& indexElement);
+    bool IsIndexInsideVectorRange(const uint32_t& indexElement)const;
     void CopyDataAndAllocateMemory(const uint32_t& desiredSize);
     void UpdateVectorSize(const uint32_t& desiredSize);
     void CopyDataFromCurrentVectorIntoAuxiliaryVector(T * auxiliaryVector);
@@ -73,19 +73,22 @@ LightVector<T>::~LightVector()
 }
 
 template<class T>
-void LightVector<T>::reserve(uint32_t desiredSize){
+void LightVector<T>::reserve(uint32_t desiredSize)
+{
     if(IsDesiredSizeGreaterThanCurrentSize(desiredSize)){
         CopyDataAndAllocateMemory(desiredSize);
     }
 }
 
 template<class T>
-uint32_t LightVector<T>::size(){
+uint32_t LightVector<T>::size()const
+{
     return totalPositions_;
 }
 
 template<class T>
-void LightVector<T>::push_back(T element){
+void LightVector<T>::push_back(T element)
+{
     const uint32_t desiredSize = currentPosition_ + 1;
     if(IsDesiredSizeGreaterThanCurrentSize(desiredSize)){
         reserve(desiredSize);
@@ -96,14 +99,16 @@ void LightVector<T>::push_back(T element){
 }
 
 template<class T>
-void LightVector<T>::pop_back(){
+void LightVector<T>::pop_back()
+{
     DecreaseCurrentPosition();
     uint32_t desiredSize = currentPosition_;
     CopyDataAndAllocateMemory(desiredSize);
 }
 
 template<class T>
-T& LightVector<T>::at(const uint32_t& indexElement){
+T& LightVector<T>::at(const uint32_t& indexElement)
+{
     if(IsIndexInsideVectorRange(indexElement)){
         return GetElement(indexElement);
     } else {
@@ -112,12 +117,14 @@ T& LightVector<T>::at(const uint32_t& indexElement){
 }
 
 template<class T>
-void LightVector<T>::clear(){
+void LightVector<T>::clear()
+{
     DeleteArrayAndResetCurrentPositionAndVectorSize();
 }
 
 template<class T>
-const uint32_t& LightVector<T>::GetNumberOfElements(){
+const uint32_t& LightVector<T>::GetNumberOfElements()const
+{
     return currentPosition_;
 }
 
@@ -177,7 +184,7 @@ void LightVector<T>::DecreaseCurrentPosition()
 }
 
 template<class T>
-bool LightVector<T>::IsIndexInsideVectorRange(const uint32_t& indexElement)
+bool LightVector<T>::IsIndexInsideVectorRange(const uint32_t& indexElement)const
 {
     return indexElement < currentPosition_;
 }
